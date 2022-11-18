@@ -10,6 +10,4 @@ Rename files from plugin-name to example-me
 Rename file names (Ubuntu)
 `rename -n 's/test-plugin/new-plugin/g' *test-plugin*`
 
-Bash Script for rename
-`./rename.sh new-plugin-name`
 
