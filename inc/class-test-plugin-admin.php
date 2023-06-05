@@ -16,8 +16,14 @@ class Test_Plugin_Admin
 
     public function enqueue_scripts()
     {
+
+        $screen = get_current_screen()->id;
+        $screen = 'REWRITE';
+
+        if ($screen === "REWRITE") {
         wp_enqueue_script('test-plugin-admin-scripts', TEST_PLUGIN_URL . 'assets/js/admin.js', array('jquery'), TEST_PLUGIN_VERSION, false);
         wp_localize_script('test-plugin-admin-scripts', 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+        }
     }
 
     /**

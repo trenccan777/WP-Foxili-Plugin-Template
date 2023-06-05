@@ -7,6 +7,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 
 const config = require('./config');
 
+//ESLINT options
 const options = {
   extensions: [`js`, `jsx`, `ts`, `tsx`],
   fix: true,
@@ -17,6 +18,18 @@ const options = {
       test: /\.(js|ts|tsx)$/,
       babelOptions: {
         presets: ['@babel/preset-react'],
+      },
+      project: ['./tsconfig.json'], // Specify it only for TypeScript files
+    },
+    //remove missing semicolon error when typescript
+    parser: '@typescript-eslint/parser',
+
+    settings: {
+      'import/resolver': {
+        node: {
+          paths: ['src'],
+          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+        },
       },
     },
     plugins: ['prettier'],
@@ -36,11 +49,35 @@ const options = {
       ],
       'react/jsx-filename-extension': [
         1,
-        { extensions: ['.js', '.jsx'] },
+        { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
+      ],
+      'import/extensions': [
+        'error',
+        'ignorePackages',
+        {
+          js: 'never',
+          jsx: 'never',
+          ts: 'never',
+          tsx: 'never',
+        },
       ],
       'react/jsx-props-no-spreading': 0,
       'react/require-default-props': 0,
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-misused-promises': [
+        'error',
+        { checksVoidReturn: { attributes: false } },
+      ],
     },
+    overrides: [
+      {
+        files: ['*.ts', '*.tsx'],
+        rules: {
+          'no-undef': 'off',
+        },
+      },
+    ],
     env: {
       browser: true,
       node: true,
@@ -48,7 +85,12 @@ const options = {
     globals: {
       wpApiSettings: 'readonly',
     },
-    extends: ['airbnb', 'prettier'],
+    extends: [
+      'airbnb',
+      'prettier',
+      'plugin:@typescript-eslint/recommended',
+      'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    ],
   },
 };
 
@@ -78,10 +120,9 @@ module.exports = {
       },
     }),
     new BrowserSyncPlugin({
-      // browse to http://localhost:3000/ during development,
-      // ./public directory is being served
       files: '**/*.php',
       proxy: config.proxyUrl,
+      open: false, //Doesn't open browser automaticaly and not create error on WLS2
     }),
     new ESLintPlugin(options),
   ],
@@ -141,14 +182,19 @@ module.exports = {
         ],
       },
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx)$/,
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
+      },
     ],
-  },
-  externals: {
-    jquery: 'jQuery',
   },
 
   resolve: {

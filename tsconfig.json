@@ -1,13 +1,11 @@
 {
-    "compilerOptions": {
-      "outDir": "./dist/",
-      "noImplicitAny": false,
-      "strictNullChecks": true,
-      "module": "es6",
-      "target": "es5",
-      "jsx": "react",
-      "allowJs": false,
-      "moduleResolution": "node",
-      "allowSyntheticDefaultImports": true,
-    }
+  "compilerOptions": {  
+    "jsx": "react",
+    //reduce bundle size
+    "module": "es6",
+    "allowSyntheticDefaultImports": true,
+     "moduleResolution": "node",
+     // INSTEAD import * as React from 'react'; USE import React from 'react';
+     "esModuleInterop": true,  
   }
+}

@@ -1,7 +1,5 @@
-import reactAdminInit from './admin/react-admin';
+import reactFrontInit from './admin/react-admin';
 
 document.addEventListener('DOMContentLoaded', () => {
-  reactAdminInit();
+  reactFrontInit();
 });
-
-console.log('Hello admin');
